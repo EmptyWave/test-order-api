@@ -6,22 +6,24 @@ use App\Dto\DataTransferObject;
 
 class ResponseData extends DataTransferObject
 {
-    public string $body;
+    /** @var array $body */
+    public $body;
 
-    public string $statusCode;
+    /** @var int $statusCode */
+    public $statusCode;
 
     /**
-     * @return string|null
+     * @return array|null
      */
-    public function getBody(): ?string
+    public function getBody(): ?array
     {
         return $this->body;
     }
 
     /**
-     * @return string|null
+     * @return int|null
      */
-    public function getStatusCode(): ?string
+    public function getStatusCode(): ?int
     {
         return $this->statusCode;
     }

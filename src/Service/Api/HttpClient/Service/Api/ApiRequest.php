@@ -16,18 +16,20 @@ class ApiRequest implements RequestInterface
     /**
      * @var string
      */
-    private $url = '';
+    private string $url;
 
     /**
-     * @var string
+     * @var float
      */
-    private $payment;
+    private float $payment;
 
     /**
+     * @param string $url
      * @param float $payment
      */
-    public function __construct(float $payment)
+    public function __construct(string $url, float $payment)
     {
+        $this->url = $url;
         $this->payment = $payment;
     }
 
@@ -39,6 +41,7 @@ class ApiRequest implements RequestInterface
      * @throws Exception\ApiHttpClientException
      * @throws Exception\ApiHttpClientForbiddenException
      * @throws Exception\ApiHttpClientUnauthorizedException
+     * @throws \GuzzleHttp\Exception\GuzzleException
      */
     public function execute(Client $httpClient): ResponseInterface
     {

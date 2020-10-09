@@ -50,7 +50,7 @@ class OrderManager
 
         $products = $this->productRepository->findByIds($productIds);
         if (count($products) < count($productIds)) {
-            throw new Exception\CreateOrderException('Didn\'t find some products');
+            throw new Exception\CreateOrderException("Didn't find some products");
         }
 
         $cart = new Cart();
@@ -80,7 +80,7 @@ class OrderManager
 
         $orderSum = $order->getSum();
         if (($orderSum === $payment) && $order->isNew()) {
-            $request = new ApiRequest($payment);
+            $request = new ApiRequest(self::PAYMENT_URL, $payment);
             $data = $this->httpClient->request($request);
 
             /** @var ResponseData $data */

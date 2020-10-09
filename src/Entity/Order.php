@@ -105,4 +105,17 @@ class Order
     {
         $this->setStatus(static::STATUS_PAID);
     }
+
+    public function toArray(): array
+    {
+        $class = new \ReflectionClass(static::class);
+        $parameters = [];
+
+        foreach ($class->getProperties(\ReflectionProperty::IS_PRIVATE) as $reflectionProperty) {
+            $property = $reflectionProperty->getName();
+            $parameters[$property] = $this->{$property};
+        }
+
+        return $parameters;
+    }
 }

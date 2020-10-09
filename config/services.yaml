@@ -20,12 +20,49 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
             - '../src/Tests/'
+            - '../src/Service/'
 
     # controllers are imported separately to make sure services can be injected
     # as action arguments even if you don't extend any base controller class
-    App\Controller\:
-        resource: '../src/Controller/'
-        tags: ['controller.service_arguments']
+
+    App\Service\Factory\Database:
+        class: App\Service\Factory\Database
+        arguments: ['%database_url%', '%database_driver%']
+
+    App\Service\Factory\HttpClient:
+        class: App\Service\Factory\HttpClient
+
+    App\Service\Api\HttpClient\ApiHttpClient:
+        class: App\Service\Api\HttpClient\ApiHttpClient
+        factory: ['@App\Service\Factory\HttpClient', getHttpClient]
+
+    App\Repository\ProductRepository:
+        class: App\Repository\ProductRepository
+        factory: ['@App\Service\Factory\Database', getRepository]
+        arguments:
+            - App\Entity\Product
+
+    App\Repository\OrderRepository:
+        class: App\Repository\OrderRepository
+        factory: ['@App\Service\Factory\Database', getRepository]
+        arguments:
+            - App\Entity\Order
+
+    App\Service\Api\OrderManager:
+        class: App\Service\Api\OrderManager
+        arguments: ['@App\Repository\ProductRepository', '@App\Repository\ProductRepository', '@App\Service\Api\HttpClient\ApiHttpClient']
+
+    App\Service\Api\ProductManager:
+        class: App\Service\Api\OrderManager
+        arguments: ['@App\Repository\ProductRepository']
+
+    App\Controller\Api\OrderController:
+        class: App\Controller\Api\OrderController
+        arguments: ['@App\Service\Api\OrderManager']
+
+    App\Controller\Api\ProductController:
+        class: App\Controller\Api\ProductController
+        arguments: ['@App\Service\Api\ProductManager']
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

@@ -1,3 +1,14 @@
-#index:
-#    path: /
-#    controller: App\Controller\DefaultController::index
+generate_product:
+  path: /api/product/generate
+  defaults: {_controller: 'App\Controller\Api\ProductController::GenerateProductAction'}
+  methods:  [POST]
+
+create_order:
+  path: /api/order/create
+  defaults: {_controller: 'App\Controller\Api\OrderController::createOrderAction'}
+  methods:  [POST]
+
+pay_order:
+  path: /api/order/pay
+  defaults: {_controller: 'App\Controller\Api\OrderController::payOrderAction'}
+  methods:  [PUT]

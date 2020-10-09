@@ -8,8 +8,8 @@ use GuzzleHttp\Client;
 
 class ApiHttpClient
 {
-    /** @var Client */
-    private Client $httpClient;
+    /** @var Client $httpClient */
+    private $httpClient;
 
     public function __construct(Client $httpClient)
     {
